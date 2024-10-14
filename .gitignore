@@ -1,2 +1,2 @@
-.env/env_variables.py
+env/env_variables.py
 .venv

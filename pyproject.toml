@@ -9,6 +9,7 @@ packages = [{include = "projeto_04"}]
 [tool.poetry.dependencies]
 python = "3.12.*"
 ipykernel = "^6.29.5"
+newsapi-python = "^0.2.7"
 
 
 [build-system]
