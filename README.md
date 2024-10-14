@@ -1,9 +1,11 @@
 ![pyenv](https://img.shields.io/badge/pyenv-white?style=for-the-badge)
 ![poetry](https://img.shields.io/badge/poetry-d0d4fc?style=for-the-badge)
-![ipykernel](https://img.shields.io/badge/ipykernel-3670A0?style=for-the-badge)
 
+![ipykernel](https://img.shields.io/badge/ipykernel-3670A0?style=for-the-badge)
 ![newsapi](https://img.shields.io/badge/newsapi-1a73e8?style=for-the-badge)
-![requests](https://img.shields.io/badge/requests-ffffff?style=for-the-badge)
+![numpy](https://img.shields.io/badge/numpy-013243?style=for-the-badge)
+![pandas](https://img.shields.io/badge/pandas-130654?style=for-the-badge)
+![pyarrow](https://img.shields.io/badge/pyarrow-222832?style=for-the-badge)
 
 # Projeto Genomica
 

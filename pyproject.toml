@@ -10,6 +10,8 @@ packages = [{include = "projeto_04"}]
 python = "3.12.*"
 ipykernel = "^6.29.5"
 newsapi-python = "^0.2.7"
+pandas = "^2.2.3"
+numpy = "^2.1.2"
 
 
 [build-system]
