@@ -2,23 +2,27 @@
 from newsapi import NewsApiClient
 import json
 
+
 def api_client(key):
     # Inicializando News API
     newsapi = NewsApiClient(api_key=key)
     return newsapi
 
-def total_results(client):
-    # TODO
-    # Função para percorrer todas as páginas
-    # E depois chamar a função para extrair os artigos
-    pass
+
+def search(client, page = 1):
+    try: 
+        all_data = client.get_everything(q="genomics", page = page)
+        return all_data
+    except:
+        return {"status": "end"}
 
 
 def get_articles(client):
-    #TODO
-    # Alterar para ser apenas a extração dos artigos
-    all_articles = client.get_everything(q="genomics")
-    if all_articles["status"] == "ok":
-        return all_articles["articles"]
-    else:
-        raise ValueError("Status não Encontrado")
+    all_data = search(client)
+    page = 1
+    all_articles = []
+    while all_data["status"] == "ok":
+        all_articles += all_data["articles"]
+        page += 1
+        all_data = search(client, page)
+    return all_articles
