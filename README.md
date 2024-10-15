@@ -14,5 +14,7 @@ Na raíz do projeto existe deve ser adicionada uma pasta *env* com um arquivo ch
 
 * *apikey*: Chave deve ser criada no portal [News API](https://newsapi.org)
 
-Além disso, criar um arquivo *.gitignore* e adicionar a linha "env/env_variables.py"
-
+Além disso, o *.gitignore* ignora os seguintes diretórios:
+* env/env_variables.py - 
+* api/__ pycache __
+* env/__ pycache __
