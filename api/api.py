@@ -1,6 +1,6 @@
 # Bibliotecas
 from newsapi import NewsApiClient
-import json
+import os
 
 
 def api_client(key):
