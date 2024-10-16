@@ -1,8 +1,10 @@
 # Bibliotecas
 import datetime
 
+
 # Variáveis
 from env.env_variables import apikey
+
 
 # Funções
 from api import api

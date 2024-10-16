@@ -18,4 +18,15 @@ def save_data(df, nome):
 
 def get_date_shape(df):
     df = pd.read_parquet("../data/data_raw.parquet")
-    rows = df.shape[0]
+
+
+
+
+
+def extract_font(df):
+    def nome_fonte(fonte):
+        return fonte.get('name')
+    
+    df['source'] = df['source'].apply(nome_fonte)
+
+    return df
