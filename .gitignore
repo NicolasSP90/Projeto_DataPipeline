@@ -1,4 +1,9 @@
 env/env_variables.py
 .venv
+__pycache__
 api/__pycache__
+assets/__pycache__
+data/__pycache__
 env/__pycache__
+pipeline/__pycache__
+tests/__pycache__
