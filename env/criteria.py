@@ -4,7 +4,7 @@ class Search_Criteria:
         self.__subject = subject # "genomics"
         self.__keywords = keywords # ["DNA", "genetics", "treatment"]
     
-    def add_keyworkd(self, new_keyword):
+    def add_keyworld(self, new_keyword):
         self.__keywords.append(new_keyword)
 
     def remove_keyworkd(self, old_keyword):
