@@ -39,10 +39,10 @@ class Data_Pipeline_API:
 
     def data_cleaning(self):
         # Remove coluna de url de imagem de capa
-        self.__df_parquet = self.__df_parquet.drop(columns=['urlToImage'])
+        self.__df = self.__df_parquet.drop(columns=['urlToImage'])
 
         #Alterar o nome das colunas
-        self.__df_parquet = self.__df_parquet.rename(columns={'author': 'Autor',
+        self.__df = self.__df.rename(columns={'author': 'Autor',
                                               'title': 'Título',
                                               'description': 'Descrição',
                                               'url' : 'URL',
@@ -52,14 +52,14 @@ class Data_Pipeline_API:
 
         # Organizar colunas
         df_order = ['Data Publicação', 'Título', 'Autor', 'Descrição', 'URL', 'Fonte', 'Conteúdo']
-        self.__df_parquet = self.__df_parquet[df_order]
+        self.__df = self.__df[df_order]
 
         # Ajuste do dia de publicação
-        self.__df_parquet['Data Publicação'] = pd.to_datetime(self.__df_parquet['Data Publicação'], format='ISO8601')
-        self.__df_parquet['Data Publicação'] = self.__df_parquet['Data Publicação'].dt.strftime('%Y/%m/%d')
+        self.__df['Data Publicação'] = pd.to_datetime(self.__df['Data Publicação'], format='ISO8601')
+        self.__df['Data Publicação'] = self.__df['Data Publicação'].dt.strftime('%Y/%m/%d')
 
         # Ordenar Datas
-        self.__df_parquet = self.__df_parquet.sort_values('Data Publicação').reset_index().drop(columns=['index'])
+        self.__df = self.__df.sort_values('Data Publicação').reset_index().drop(columns=['index'])
     
 
     @property
