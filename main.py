@@ -10,11 +10,11 @@ from api.api import APIClient
 from env.criteria import Search_Criteria
 from pipeline.pipeline import Data_Pipeline_API
 
-# Instanciando API
-client = APIClient(apikey)
-
 # Instanciando pesquisa e palavras chave
 criteria = Search_Criteria("genomics", ["DNA", "genetic", "treatment"])
+
+# Instanciando API
+client = APIClient(apikey, criteria.subject)
 
 # Defina os minutos específicos em que a ação deve ocorrer
 specific_time = [0, 10, 20, 30, 40, 50]
