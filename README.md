@@ -7,7 +7,7 @@
 ![pyarrow](https://img.shields.io/badge/pyarrow-222832?style=for-the-badge)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![poo](https://img.shields.io/badge/poo-black?style=for-the-badge)
-![Apache Spark](https://img.shields.io/badge/Apache%20Spark-FDEE21?style=flat-square&logo=apachespark&logoColor=black)
+![Apache Spark](https://img.shields.io/badge/Apache%20Spark-FDEE21?style=for-the-badge&logo=apachespark&logoColor=black)
 ![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka)
 ![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=white)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
@@ -15,7 +15,7 @@
 ![Databricks](https://img.shields.io/badge/databricks-222832?style=for-the-badge&logo=databricks)
 
 
-# Contexto do Projeto
+# Enunciado Projeto Proposto
 
 O grupo trabalha no time de engenharia de dados na HealthGen, uma empresa especializada em genômica e pesquisa de medicina personalizada. A genômica é o estudo do conjunto completo de genes de um organismo, desempenha um papel fundamental na medicina personalizada e na pesquisa biomédica. Permite a análise do DNA para identificar variantes genéticas e mutações associadas a doenças e facilita a personalização de tratamentos com base nas características genéticas individuais dos pacientes.
 
@@ -38,30 +38,72 @@ https://newsapi.org/
 * Quantidade de notícias por fonte e autor;
 * Quantidade de aparições de 3 palavras chaves por ano, mês e dia de publicação
 
-# Particularidades do Projeto
+# Estrutura do Projeto
 
 ## Variáveis de Ambiente
-Na raíz do projeto existe deve ser criado na pasta *env* um arquivo chamado *env_variables.py*. Neste arquivo devem ser adicionadas as variáveis e valores a seguir:
+Na raiz do projeto, deve ser criada uma pasta chamada env, onde será armazenado o arquivo env_variables.py. Neste arquivo, será configurada a seguinte variável de ambiente:
 
-* *apikey*: Chave deve ser criada no portal [News API](https://newsapi.org)
+*apikey*: Chave deve ser criada no portal [News API](https://newsapi.org)
+
+Chave de acesso à API, que deve ser gerada individualmente no portal News API. Cada desenvolvedor precisa criar sua própria chave de acesso no portal e inseri-la nesta variável para utilizar os serviços da API.
 
 ## Ambiente de Desenvolvimento
-O projeto em si é modularizado e cada módulo armazena as funções específicas daquela aplicação. Para testes específicos de funções, é utilizado o notebook do diretório *tests*.
+O projeto é modularizado, com cada módulo armazenando as funções específicas da aplicação. Para testes individuais de funções, utilizamos notebooks localizados no diretório tests.
 
-Além disso, o *.gitignore* ignora os seguintes diretórios:
-* env/env_variables.py - Arquivo das variáveis e chaves necessárias.
-* __ pycache __ - diretório de arquivos cache. Podem existir dentro dos diretórios dos módulos e serve para o ambiente de testes apenas.
+Arquivos Ignorados
+O arquivo .gitignore está configurado para ignorar os seguintes diretórios e arquivos:
 
-## API - News API
-A API em si possui uma biblioteca para facilitar os requests e pode ser instalada com _pip install newsapi-python_.
+* env/env_variables.py: Arquivo contendo as variáveis de ambiente e chaves de acesso.
+* pycache: Diretórios de cache gerados automaticamente, geralmente criados dentro dos módulos, e utilizados apenas no ambiente de testes.
 
-A API em si possui algumas limitações (Ambiente Gratuito):
-* A busca por artigos é limitada aos últimos 30 dias;
-* 50 requests a cada 12 horas;
-* Métodos para solicitar todos os artigos é limitado a 100 artigos por página
-* A última página, ao solicitar todos os artigos, possui mais de 100 artigos. Para adquirir podem ser utilizados requests personalizados. Nesse caso foi decidido não fazer uma estratégia de aquisição por dois motivos: Podem ultrapassar os requests necessários; Não garante que todos os artigos serão adquiridos, sendo necessário o comando de aquisição de todos de uma forma ou de outra.
+## Integração com a API - News API
+Utilizamos a biblioteca oficial da News API para facilitar as requisições, a qual pode ser instalada com o seguinte comando:
 
-O foco do projeto não é necessariamente a API, sendo assim as limitações delas serão relevadas.
+pip install newsapi-python
+
+Limitações da API (Plano Gratuito):
+* A busca por artigos está restrita aos últimos 30 dias.
+* Limite de 50 requisições a cada 12 horas.
+* O retorno da API é limitado a 100 artigos por página.
+* A última página pode conter mais de 100 artigos, mas não foi implementada uma estratégia para adquirir todos os artigos adicionais, devido à limitação de requisições e à falta de garantia de que todos os artigos seriam obtidos.
+
+Essas limitações foram consideradas no desenvolvimento do projeto, e como o foco principal não é a aquisição de todos os artigos possíveis, essas restrições não comprometem o objetivo final.
+
+## Adequação para Execução no Databricks
+Para garantir que o projeto funcione corretamente dentro do ambiente Databricks, foi criada uma pasta chamada Databricks, que contém cinco arquivos necessários para rodar o programa no cluster. Abaixo estão os detalhes de cada arquivo:
+
+1 - setup_kafka_zookeeper
+
+Neste arquivo, o Apache Kafka é baixado, descompactado e instalado no cluster do Databricks. Além disso, o funcionamento do Zookeeper, que é responsável pela coordenação dos serviços distribuídos, é iniciado.
+
+2 - setup_kafka_server
+
+Este arquivo contém o comando necessário para iniciar o servidor Kafka, permitindo a comunicação entre o cluster e os consumidores/produtores de mensagens.
+
+3 - setup_kafka_topic
+
+Aqui, o tópico Kafka utilizado no projeto é criado, onde as mensagens da API serão publicadas e consumidas.
+
+4 - Pipeline
+
+Este arquivo contém a implementação de toda a pipeline de consumo e processamento de dados. Para garantir o funcionamento correto, é necessário instalar quatro bibliotecas no ambiente Databricks, através do terminal:
+
+pip install --upgrade pip
+pip install kafka-python
+pip install newsapi-python
+pip install schedule
+
+5 - insertion
+
+Neste arquivo, são definidos os critérios de busca de artigos na API NewsAPI, o produtor de mensagens Kafka (producer), e a rotina de carga em lotes (batch) que insere os dados no tópico previamente criado.
+
+## Conclusão
+Este projeto foi desenvolvido com o objetivo de integrar a News API ao Kafka e permitir o processamento de dados dentro de um ambiente distribuído como o Databricks. Seguindo as instruções fornecidas ao longo deste documento, é possível configurar o ambiente corretamente e garantir o funcionamento eficiente da pipeline de dados.
+
+Apesar das limitações da API no plano gratuito, o projeto foi planejado para ser escalável e modular, facilitando a manutenção e a adição de novas funcionalidades no futuro. O uso de tecnologias como Kafka e Databricks permite um processamento em tempo real e em lote, tornando o projeto uma base sólida para quem deseja explorar a integração de APIs e processamento de dados em larga escala.
+
+Agradecemos o interesse no projeto e ficamos à disposição para sugestões ou melhorias. Sinta-se à vontade para contribuir, testar e personalizar conforme suas necessidades.
+
 
 
 
