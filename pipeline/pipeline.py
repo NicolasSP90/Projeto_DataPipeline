@@ -21,7 +21,13 @@ class Data_Pipeline_API:
     # Transformar os dados .parquet em DataFrame
     def load_parquet(self, name) -> None:
         file = f"{name}.parquet"
-        data_folder = os.path.join(os.path.curdir, "..", "data")
+        
+        # Para tests
+        # data_folder = os.path.join(os.path.curdir, "..", "data")
+
+        # Para main
+        data_folder = os.path.join(os.path.curdir, "data")
+
         self.__df_parquet = pd.read_parquet(os.path.join(data_folder, file))
 
 
@@ -29,7 +35,13 @@ class Data_Pipeline_API:
     # Mantém apenas colunas únicas
     def save_data(self, name) -> None:
         file = f"{name}.parquet"
-        data_folder = os.path.join(os.path.curdir, "..", "data")
+        
+        # Para tests
+        # data_folder = os.path.join(os.path.curdir, "..", "data")
+
+        # Para main
+        data_folder = os.path.join(os.path.curdir, "data")
+
         if file in os.listdir(data_folder):
             self.load_parquet(name)
             self.__df = pd.concat([self.__df_parquet, self.__df]).drop_duplicates().reset_index().drop(columns=["index"])

@@ -10,14 +10,16 @@ from api.api import APIClient
 from env.criteria import Search_Criteria
 from pipeline.pipeline import Data_Pipeline_API
 
-# Instanciando API
-client = APIClient(apikey)
-
 # Instanciando pesquisa e palavras chave
 criteria = Search_Criteria("genomics", ["DNA", "genetic", "treatment"])
 
+# Instanciando API
+client = APIClient(apikey, criteria.subject)
+
 # Defina os minutos específicos em que a ação deve ocorrer
-specific_time = [0, 10, 20, 30, 40, 50]
+specific_time = [0, 15, 30, 45]
+
+print("Script Iniciado")
 
 while True:
     now = datetime.datetime.now()
@@ -30,14 +32,15 @@ while True:
         # Instanciando Pipeline
         pipeline_data = Data_Pipeline_API()
 
-        # Carregando dados da API
-        pipeline_data.load_api(client.articles)
+        if len(client.articles) != 0:
+            # Carregando dados da API
+            pipeline_data.load_api(client.articles)
 
-        # Salvando em Parquet - Dados brutos
-        pipeline_data.save_data("raw_data")
-        print(f"raw_data atualizado em {now.strftime('%Y-%m-%d %H:%M:%S')}")
+            # Salvando em Parquet - Dados brutos
+            pipeline_data.save_data("raw_data")
+            print(f"raw_data atualizado em {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
-        if current_minute % 30 == 0:
+        if current_minute == 0:
             # Importando DataFrame
             pipeline_data.load_parquet("raw_data")
 
@@ -48,9 +51,10 @@ while True:
             pipeline_data.save_data("cleaned_data")
             print(f"cleaned_data atualizado em {now.strftime('%Y-%m-%d %H:%M:%S')}")
         
-        # Pausa de 60 segundos para evitar múltiplas execuções no mesmo minuto
-        time.sleep(60)
-    else:
-        # Verifica a cada 30 segundos
-        time.sleep(30)  
+            # Pausa de 12 minutos segundos para evitar múltiplas execuções no mesmo minuto
+            time.sleep(720)
+        
+        else:
+            # Verifica a cada 30 segundos
+            time.sleep(30)
 
