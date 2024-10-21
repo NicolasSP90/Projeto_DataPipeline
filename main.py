@@ -31,6 +31,7 @@ def update_raw():
     
     else:
         print(f"Sem atualizações em {now.strftime('%Y-%m-%d %H:%M:%S')}")
+        time.sleep(30)
 
 
 def update_cleaned():
@@ -49,6 +50,7 @@ def update_cleaned():
     # Salvando Parquet
     pipeline_data.save_data("cleaned_data")
     print(f"cleaned_data atualizado em {now.strftime('%Y-%m-%d %H:%M:%S')}")
+    time.sleep(780)
 
 
 # Instanciando pesquisa e palavras chave
