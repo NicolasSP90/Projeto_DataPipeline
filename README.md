@@ -1,11 +1,19 @@
 ![pyenv](https://img.shields.io/badge/pyenv-white?style=for-the-badge)
-![poetry](https://img.shields.io/badge/poetry-d0d4fc?style=for-the-badge)
-
+![Poetry](https://img.shields.io/badge/Poetry-%233B82F6.svg?style=for-the-badge&logo=poetry&logoColor=0B3D8D)
 ![ipykernel](https://img.shields.io/badge/ipykernel-3670A0?style=for-the-badge)
 ![newsapi](https://img.shields.io/badge/newsapi-1a73e8?style=for-the-badge)
-![numpy](https://img.shields.io/badge/numpy-013243?style=for-the-badge)
-![pandas](https://img.shields.io/badge/pandas-130654?style=for-the-badge)
+![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
 ![pyarrow](https://img.shields.io/badge/pyarrow-222832?style=for-the-badge)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![poo](https://img.shields.io/badge/poo-black?style=for-the-badge)
+![Apache Spark](https://img.shields.io/badge/Apache%20Spark-FDEE21?style=flat-square&logo=apachespark&logoColor=black)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka)
+![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=white)
+![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Databricks](https://img.shields.io/badge/databricks-222832?style=for-the-badge&logo=databricks)
+
 
 # Contexto do Projeto
 
