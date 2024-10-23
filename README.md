@@ -9,7 +9,7 @@
 ![poo](https://img.shields.io/badge/poo-black?style=for-the-badge)
 ![Apache Spark](https://img.shields.io/badge/Apache%20Spark-FDEE21?style=for-the-badge&logo=apachespark&logoColor=black)
 ![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka)
-![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=white)
+![Jupyter Notebook](https://img.shields.io/badge/jupyter-white?style=for-the-badge&logo=jupyter&logoColor=orange)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 ![Databricks](https://img.shields.io/badge/databricks-222832?style=for-the-badge&logo=databricks)
@@ -38,19 +38,28 @@ https://newsapi.org/
 * Quantidade de notícias por fonte e autor;
 * Quantidade de aparições de 3 palavras chaves por ano, mês e dia de publicação
 
-# Estrutura do Projeto
+# Projeto
+
+O projeto tem como objetivo ser utilizado no Databricks. Dessa forma a pasta *databricks* é a responsável efetiva pelo projeto e aplicação. As demais pastas foram feitas para desenvolvimento local de objetos e códigos para serem importados para os notebooks do Databricks. Algumas considerações:
+
+* A estrutura de diretórios do Databricks não é exatamente a mesmas para importação de pacotes e objetos. Dessa forma foi optado pelos códigos de objetos serem adicionados em células nos notebooks em que serão utilizados. Não foi estudado modos de importação de arquivos, seja do Workstation ou do FileSystem.
+
+* Os objetos são virtualmente os mesmos. A diferença está nos objetos de pipeline que, ao serem importados para o databricks foram remodelados para utilizarem pyspark.pandas, além de salvarem os dados em delta.
+
+# Estrutura Local
+
+## Ambiente de Desenvolvimento
+O projeto é modularizado, com cada módulo armazenando as funções específicas da aplicação. Para testes individuais de funções, utilizamos notebook localizado no diretório *tests*.
 
 ## Variáveis de Ambiente
-Na raiz do projeto, deve ser criada uma pasta chamada env, onde será armazenado o arquivo env_variables.py. Neste arquivo, será configurada a seguinte variável de ambiente:
+Na pasta chamada env, deve ser criado um arquivo *env_variables.py*. Neste arquivo, será configurada a seguinte variável de ambiente:
 
 *apikey*: Chave deve ser criada no portal [News API](https://newsapi.org).
 
 Chave de acesso à API, que deve ser gerada individualmente no portal News API. Cada desenvolvedor precisa criar sua própria chave de acesso no portal e inseri-la nesta variável para utilizar os serviços da API.
 
-## Ambiente de Desenvolvimento
-O projeto é modularizado, com cada módulo armazenando as funções específicas da aplicação. Para testes individuais de funções, utilizamos notebooks localizados no diretório tests.
+## Arquivos Ignorados
 
-Arquivos Ignorados
 O arquivo .gitignore está configurado para ignorar os seguintes diretórios e arquivos:
 
 * env/env_variables.py: Arquivo contendo as variáveis de ambiente e chaves de acesso.
@@ -72,32 +81,41 @@ Essas limitações foram consideradas no desenvolvimento do projeto, e como o fo
 ## Adequação para Execução no Databricks
 Para garantir que o projeto funcione corretamente dentro do ambiente Databricks, foi criada uma pasta chamada Databricks, que contém cinco arquivos necessários para rodar o programa no cluster. Abaixo estão os detalhes de cada arquivo:
 
-1 - setup_kafka_zookeeper
+### 01.setup_kafka_zookeeper.ipynb
 
 Neste arquivo, o Apache Kafka é baixado, descompactado e instalado no cluster do Databricks. Além disso, o funcionamento do Zookeeper, que é responsável pela coordenação dos serviços distribuídos, é iniciado.
 
-2 - setup_kafka_server
+### 02.setup_kafka_server.ipynb
 
 Este arquivo contém o comando necessário para iniciar o servidor Kafka, permitindo a comunicação entre o cluster e os consumidores/produtores de mensagens.
 
-3 - setup_kafka_topic
+### 03.setup_kafka_topics.ipynb
 
-Aqui, o tópico Kafka utilizado no projeto é criado, onde as mensagens da API serão publicadas e consumidas.
+Aqui, os tópicos Kafka utilizados no projeto são criados, onde as mensagens da API serão publicadas e consumidas.
 
-4 - Pipeline
+### 04.pipeline_gather_data.ipynb e 05.pipeline_clean_data.ipynb
 
-Este arquivo contém a implementação de toda a pipeline de consumo e processamento de dados. Para garantir o funcionamento correto, é necessário instalar quatro bibliotecas no ambiente Databricks, através do terminal:
+Ambos arquivos possuem o objeto da pipeline, para consumo e processamento de dados. A separação em dois arquivos se dá por conta dos consumers serem diferentes para aquisição e salvamento de dados brutos e para limpeza e salvamento de dados tratados. Para simplificar a utilização dos notebooks sem precisar lidar com a importação de módulos externos no databricks, o código da pipeline foi copiado e adicionado em ambos notebooks.
+
+Para garantir o funcionamento correto, é necessário instalar quatro bibliotecas no ambiente Databricks, através do terminal:
 
 pip install --upgrade pip
+
 pip install kafka-python
+
 pip install newsapi-python
+
 pip install schedule
 
-5 - insertion
+### 06.insertion.ipynb
 
-Neste arquivo, são definidos os critérios de busca de artigos na API NewsAPI, o produtor de mensagens Kafka (producer), e a rotina de carga em lotes (batch) que insere os dados no tópico previamente criado.
+Neste arquivo, são definidos os critérios de busca de artigos na API NewsAPI, o produtor de mensagens Kafka (producer), e a rotina de carga de dados brutos e de limpeza e tratamento dos dados.
 
-## Conclusão
+### 07.visualization.ipynb
+
+Aqui são visualizados os objetivos da coleta dos dados, como a visualização das publicações de artigos, autores e palavras-chave.
+
+# Conclusão
 Este projeto foi desenvolvido com o objetivo de integrar a News API ao Kafka e permitir o processamento de dados dentro de um ambiente distribuído como o Databricks. Seguindo as instruções fornecidas ao longo deste documento, é possível configurar o ambiente corretamente e garantir o funcionamento eficiente da pipeline de dados.
 
 Apesar das limitações da API no plano gratuito, o projeto foi planejado para ser escalável e modular, facilitando a manutenção e a adição de novas funcionalidades no futuro. O uso de tecnologias como Kafka e Databricks permite um processamento em tempo real e em lote, tornando o projeto uma base sólida para quem deseja explorar a integração de APIs e processamento de dados em larga escala.
