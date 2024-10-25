@@ -44,6 +44,8 @@ O projeto tem como objetivo ser utilizado no Databricks. Dessa forma a pasta *da
 
 * A estrutura de diretórios do Databricks não é exatamente a mesmas para importação de pacotes e objetos. Dessa forma foi optado pelos códigos de objetos serem adicionados em células nos notebooks em que serão utilizados. Não foi estudado modos de importação de arquivos, seja do Workstation ou do FileSystem.
 
+* A idéia central é que seja realizada a menor quantidade de interações fora dos notebooks. Dessa forma os códigos de objetos inseridos nos notebooks (mesmo que duplicados em diferentes notebooks e não improtados) tem como objetivos que cada notebook apenas seja executado (Run All) ao ser aberto. Para isso são necessárias instalar as bibliotecas informadas diretamente no  terminal.
+
 * Os objetos são virtualmente os mesmos. A diferença está nos objetos de pipeline que, ao serem importados para o databricks foram remodelados para utilizarem pyspark.pandas, além de salvarem os dados em delta.
 
 # Estrutura Local
@@ -79,7 +81,7 @@ Limitações da API (Plano Gratuito):
 Essas limitações foram consideradas no desenvolvimento do projeto, e como o foco principal não é a aquisição de todos os artigos possíveis, essas restrições não comprometem o objetivo final.
 
 ## Adequação para Execução no Databricks
-Para garantir que o projeto funcione corretamente dentro do ambiente Databricks, foi criada uma pasta chamada Databricks, que contém cinco arquivos necessários para rodar o programa no cluster. Abaixo estão os detalhes de cada arquivo:
+Para garantir que o projeto funcione corretamente dentro do ambiente Databricks, foi criada uma pasta chamada Databricks, que contém cinco arquivos necessários para rodar o programa no cluster. Abaixo estão os detalhes de cada arquivo, com algumas . OBS: para simplificar execução dos notebooks no databricks, os objetos que estão modularizados no 
 
 ### 01.setup_kafka_zookeeper.ipynb
 
@@ -95,17 +97,15 @@ Aqui, os tópicos Kafka utilizados no projeto são criados, onde as mensagens da
 
 ### 04.pipeline_gather_data.ipynb e 05.pipeline_clean_data.ipynb
 
-Ambos arquivos possuem o objeto da pipeline, para consumo e processamento de dados. A separação em dois arquivos se dá por conta dos consumers serem diferentes para aquisição e salvamento de dados brutos e para limpeza e salvamento de dados tratados. Para simplificar a utilização dos notebooks sem precisar lidar com a importação de módulos externos no databricks, o código da pipeline foi copiado e adicionado em ambos notebooks.
+Ambos arquivos possuem o objeto da pipeline, para consumo e processamento de dados. A separação em dois arquivos se dá por conta dos consumers serem diferentes para aquisição e salvamento de dados brutos e para limpeza e salvamento de dados tratados. Para simplificar a utilização dos notebooks sem precisar lidar com a importação de módulos externos no databricks, o código do objeto da pipeline foi copiado e adicionado em ambos notebooks.
 
 Para garantir o funcionamento correto, é necessário instalar quatro bibliotecas no ambiente Databricks, através do terminal:
+* pip install --upgrade pip
+* pip install kafka-python
+* pip install newsapi-python
+* pip install schedule
 
-pip install --upgrade pip
-
-pip install kafka-python
-
-pip install newsapi-python
-
-pip install schedule
+A pipeline converte os dados da API em arquivo parquet de dados brutos (*Extract*), limpa dados para realizar o salvamento em arquivo parquet, tabela delta e disponibiliza no *Database Tables* (*Transform*) e finalmente filtra e cria as tabelas no *Database Tables* para responder as perguntas de negócio (*Load*)
 
 ### 06.insertion.ipynb
 
@@ -113,7 +113,7 @@ Neste arquivo, são definidos os critérios de busca de artigos na API NewsAPI, 
 
 ### 07.visualization.ipynb
 
-Aqui são visualizados os objetivos da coleta dos dados, como a visualização das publicações de artigos, autores e palavras-chave.
+Aqui são visualizados as tableas salvas, como a visualização das publicações de artigos, autores e palavras-chave.
 
 # Conclusão
 Este projeto foi desenvolvido com o objetivo de integrar a News API ao Kafka e permitir o processamento de dados dentro de um ambiente distribuído como o Databricks. Seguindo as instruções fornecidas ao longo deste documento, é possível configurar o ambiente corretamente e garantir o funcionamento eficiente da pipeline de dados.
