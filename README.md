@@ -56,7 +56,7 @@ O projeto é modularizado, com cada módulo armazenando as funções específica
 ## Variáveis de Ambiente
 Na pasta chamada env, deve ser criado um arquivo *env_variables.py*. Neste arquivo, será configurada a seguinte variável de ambiente:
 
-*apikey*: Chave deve ser criada no portal [News API](https://newsapi.org)
+*apikey*: Chave deve ser criada no portal [News API](https://newsapi.org).
 
 Chave de acesso à API, que deve ser gerada individualmente no portal News API. Cada desenvolvedor precisa criar sua própria chave de acesso no portal e inseri-la nesta variável para utilizar os serviços da API.
 
