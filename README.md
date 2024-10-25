@@ -40,13 +40,13 @@ https://newsapi.org/
 
 # Projeto
 
-O projeto tem como objetivo ser utilizado no Databricks. Dessa forma a pasta *databricks* é a responsável efetiva pelo projeto e aplicação. As demais pastas foram feitas para desenvolvimento local de objetos e códigos para serem importados para os notebooks do Databricks. Algumas considerações:
+O projeto tem como objetivo ser utilizado no Databricks. Dessa forma os notebooks são efetivamente o projeto e aplicação. As demais pastas foram feitas para desenvolvimento local de objetos e códigos para serem importados para os notebooks do Databricks e/ou testados. Algumas considerações:
 
 * A estrutura de diretórios do Databricks não é exatamente a mesmas para importação de pacotes e objetos. Dessa forma foi optado pelos códigos de objetos serem adicionados em células nos notebooks em que serão utilizados. Não foi estudado modos de importação de arquivos, seja do Workstation ou do FileSystem.
 
 * A idéia central é que seja realizada a menor quantidade de interações fora dos notebooks. Dessa forma os códigos de objetos inseridos nos notebooks (mesmo que duplicados em diferentes notebooks e não improtados) tem como objetivos que cada notebook apenas seja executado (Run All) ao ser aberto. Para isso são necessárias instalar as bibliotecas informadas diretamente no  terminal.
 
-* Os objetos são virtualmente os mesmos. A diferença está nos objetos de pipeline que, ao serem importados para o databricks foram remodelados para utilizarem pyspark.pandas, além de salvarem os dados em delta.
+* Os objetos são virtualmente os mesmos. A diferença está nos objetos de pipeline que, ao serem importados para o databricks foram remodelados para utilizarem pyspark, além de salvarem os dados em delta e utilizarem o *Database Tables* para armazenar as últimas tabelas.
 
 # Estrutura Local
 
@@ -81,7 +81,7 @@ Limitações da API (Plano Gratuito):
 Essas limitações foram consideradas no desenvolvimento do projeto, e como o foco principal não é a aquisição de todos os artigos possíveis, essas restrições não comprometem o objetivo final.
 
 ## Adequação para Execução no Databricks
-Para garantir que o projeto funcione corretamente dentro do ambiente Databricks, foi criada uma pasta chamada Databricks, que contém cinco arquivos necessários para rodar o programa no cluster. Abaixo estão os detalhes de cada arquivo, com algumas . OBS: para simplificar execução dos notebooks no databricks, os objetos que estão modularizados no 
+ Abaixo estão os detalhes de cada notebook que deve ser importado ao Databricks. OBS: para simplificar execução dos notebooks no databricks, os objetos (cliente api, pipeline, etc) se encontram em código dentro das células dos notebooks.
 
 ### 01.setup_kafka_zookeeper.ipynb
 
