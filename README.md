@@ -42,9 +42,9 @@ https://newsapi.org/
 
 O projeto tem como objetivo ser utilizado no Databricks. Dessa forma os notebooks são efetivamente o projeto e aplicação. As demais pastas foram feitas para desenvolvimento local de objetos e códigos para serem importados para os notebooks do Databricks e/ou testados. Algumas considerações:
 
-* A estrutura de diretórios do Databricks não é exatamente a mesmas para importação de pacotes e objetos. Dessa forma foi optado pelos códigos de objetos serem adicionados em células nos notebooks em que serão utilizados. Não foi estudado modos de importação de arquivos, seja do Workstation ou do FileSystem.
+* A estrutura de diretórios do Databricks não é exatamente a mesmas para importação de pacotes e objetos. Dessa forma foi optado pelos códigos de objetos serem adicionados em um notebook que é inicializado dentro de cada outro notebook em que os objetos serão utilizados.
 
-* A idéia central é que seja realizada a menor quantidade de interações fora dos notebooks. Dessa forma os códigos de objetos inseridos nos notebooks (mesmo que duplicados em diferentes notebooks e não improtados) tem como objetivos que cada notebook apenas seja executado (Run All) ao ser aberto. Para isso são necessárias instalar as bibliotecas informadas diretamente no  terminal.
+* A idéia central é que seja realizada a menor quantidade de interações fora dos notebooks de modo que cada notebook apenas seja executado (Run All) ao ser aberto. Para isso são necessárias instalar as bibliotecas informadas diretamente no  terminal.
 
 * Os objetos são virtualmente os mesmos. A diferença está nos objetos de pipeline que, ao serem importados para o databricks foram remodelados para utilizarem pyspark, além de salvarem os dados em delta e utilizarem o *Database Tables* para armazenar as últimas tabelas.
 
@@ -80,7 +80,7 @@ Limitações da API (Plano Gratuito):
 
 Essas limitações foram consideradas no desenvolvimento do projeto, e como o foco principal não é a aquisição de todos os artigos possíveis, essas restrições não comprometem o objetivo final.
 
-## Adequação para Execução no Databricks
+# Databricks
  Abaixo estão os detalhes de cada notebook que deve ser importado ao Databricks. OBS: para simplificar execução dos notebooks no databricks, os objetos (cliente api, pipeline, etc) se encontram em código dentro das células dos notebooks.
 
 ### 01.setup_kafka_zookeeper.ipynb
@@ -95,9 +95,13 @@ Este arquivo contém o comando necessário para iniciar o servidor Kafka, permit
 
 Aqui, os tópicos Kafka utilizados no projeto são criados, onde as mensagens da API serão publicadas e consumidas.
 
-### 04.pipeline_gather_data.ipynb e 05.pipeline_clean_data.ipynb
+### 04.objects.ipynb
 
-Ambos arquivos possuem o objeto da pipeline, para consumo e processamento de dados. A separação em dois arquivos se dá por conta dos consumers serem diferentes para aquisição e salvamento de dados brutos e para limpeza e salvamento de dados tratados. Para simplificar a utilização dos notebooks sem precisar lidar com a importação de módulos externos no databricks, o código do objeto da pipeline foi copiado e adicionado em ambos notebooks.
+Nesse notebook estão os objetos necessários para as aplicações. Seu função é ser importada pelos demais notebooks para que os objetos sejam utilizados.
+
+### 05.consumer_gather_data.ipynb e 06.consumer_clean_data.ipynb
+
+Ambos arquivos possuem o objeto da pipeline, para consumo e processamento de dados. A separação em dois arquivos se dá por conta dos consumers serem diferentes para aquisição e salvamento de dados brutos e para limpeza e salvamento de dados tratados. 
 
 Para garantir o funcionamento correto, é necessário instalar quatro bibliotecas no ambiente Databricks, através do terminal:
 * pip install --upgrade pip
@@ -107,11 +111,11 @@ Para garantir o funcionamento correto, é necessário instalar quatro biblioteca
 
 A pipeline converte os dados da API em arquivo parquet de dados brutos (*Extract*), limpa dados para realizar o salvamento em arquivo parquet, tabela delta e disponibiliza no *Database Tables* (*Transform*) e finalmente filtra e cria as tabelas no *Database Tables* para responder as perguntas de negócio (*Load*)
 
-### 06.insertion.ipynb
+### 07.insertion.ipynb
 
 Neste arquivo, são definidos os critérios de busca de artigos na API NewsAPI, o produtor de mensagens Kafka (producer), e a rotina de carga de dados brutos e de limpeza e tratamento dos dados.
 
-### 07.visualization.ipynb
+### 08.visualization.ipynb
 
 Aqui são visualizados as tableas salvas, como a visualização das publicações de artigos, autores e palavras-chave.
 
