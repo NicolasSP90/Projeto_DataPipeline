@@ -48,6 +48,18 @@ O projeto tem como objetivo ser utilizado no Databricks. Dessa forma os notebook
 
 * Os objetos são virtualmente os mesmos. A diferença está nos objetos de pipeline que, ao serem importados para o databricks foram remodelados para utilizarem pyspark, além de salvarem os dados em delta e utilizarem o *Database Tables* para armazenar as últimas tabelas.
 
+De maneira geral o Scheduler define os momemntos em que a aquisição de dados da API deve ser realizada. Nesses momentos, os objetos de critérios de busca (Search_Criteria) e o cliente da API (API_Client) são instanciados e de acordo com o processo em questão (Update ou Transform), os dados são adquiridos da API e encaminhados para seu mensageiro (Kafka_Producer).
+
+![Fluxo_Scheduler](assets/01.Scheduler_Update_Transform.png)
+
+Caso o processo seja de Update, as informações serão coletadas e os dados brutos serão armazenados.
+
+![Fluxo_Raw](assets/02.Update.png)
+
+Caso o processo seja de Transform, inicialmente as informações serão coletadas e os dados brutos serão armazenados. Após isso é realizada a limpeza e armazenamento dos dados limpos/transformados. Finalmente, são geradas tabelas para serem respondidas as questões de negócio.
+
+![Fluxo_Transform](assets/03.Transform.png)
+
 # Estrutura Local
 
 ## Ambiente de Desenvolvimento
